@@ -8,23 +8,16 @@
 import Foundation
 
 final class Bank {
-    private var loanSection: BusinessSection
-    private var depositSection: BusinessSection
+    private var loanSection: BusinessSectionProtocol
+    private var depositSection: BusinessSectionProtocol
     private let customerQueue: BankManagerQueue<Customer> = BankManagerQueue()
     private let dispatchGroup = DispatchGroup()
     private(set) var timer = BusinessTimer()
     
-    init() {
-        loanSection = BusinessSection(
-            queueName: "대출창구",
-            businessType: .loan,
-            numberOfBankers: 1
-        )
-        depositSection = BusinessSection(
-            queueName: "예금창구",
-            businessType: .deposit,
-            numberOfBankers: 2
-        )
+    init(loanSection: BusinessSectionProtocol = BusinessSection(queueName: "대출창구", businessType: .loan, numberOfBankers: 1),
+         depositSection: BusinessSectionProtocol = BusinessSection(queueName: "예금창구", businessType: .deposit, numberOfBankers: 2)) {
+        self.loanSection = loanSection
+        self.depositSection = depositSection
     }
     
     func setUpCustomerQueue(customers: [Customer]) {

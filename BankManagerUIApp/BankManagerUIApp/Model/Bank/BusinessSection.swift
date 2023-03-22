@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class BusinessSection: BankWorkable {
+final class BusinessSection: BusinessSectionProtocol, BankWorkable {
     var bankDispatchQueue: DispatchQueue
     var bankSemaphore: DispatchSemaphore
     let businessType: BusinessType

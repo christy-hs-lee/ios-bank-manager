@@ -11,4 +11,7 @@ protocol BankWorkable {
     var bankDispatchQueue: DispatchQueue { get }
     var bankSemaphore: DispatchSemaphore { get }
     var businessType: BusinessType { get }
+    var isWorking: Bool { get set }
+    
+    func processJob(for customer: Customer, group: DispatchGroup)
 }
