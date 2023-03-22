@@ -12,12 +12,14 @@ final class Bank {
     private var depositSection: BusinessSectionProtocol
     private let customerQueue: BankManagerQueue<Customer> = BankManagerQueue()
     private let dispatchGroup = DispatchGroup()
-    private(set) var timer = BusinessTimer()
+    private(set) var timer: StateChangeable
     
     init(loanSection: BusinessSectionProtocol = BusinessSection(queueName: "대출창구", businessType: .loan, numberOfBankers: 1),
-         depositSection: BusinessSectionProtocol = BusinessSection(queueName: "예금창구", businessType: .deposit, numberOfBankers: 2)) {
+         depositSection: BusinessSectionProtocol = BusinessSection(queueName: "예금창구", businessType: .deposit, numberOfBankers: 2),
+         timer: StateChangeable = BusinessTimer()) {
         self.loanSection = loanSection
         self.depositSection = depositSection
+        self.timer = timer
     }
     
     func setUpCustomerQueue(customers: [Customer]) {

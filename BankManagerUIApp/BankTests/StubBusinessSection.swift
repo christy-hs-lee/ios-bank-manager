@@ -12,9 +12,11 @@ class StubBusinessSection: BusinessSectionProtocol {
     var isWorking: Bool = true
     var customer: Customer?
     var group: DispatchGroup?
+    var callCount: Int = 0
     
     func processJob(for customer: Customer, group: DispatchGroup) {
         self.customer = customer
         self.group = group
+        self.callCount += 1
     }
 }

@@ -12,11 +12,13 @@ final class BankTests: XCTestCase {
     var sut: Bank!
     var loanSection: StubBusinessSection!
     var depositSection: StubBusinessSection!
+    var timer: StubBusinessTimer!
     
     override func setUp() {
         loanSection = StubBusinessSection()
         depositSection = StubBusinessSection()
-        sut = Bank(loanSection: loanSection, depositSection: depositSection)
+        timer = StubBusinessTimer()
+        sut = Bank(loanSection: loanSection, depositSection: depositSection, timer: timer)
     }
 
     override func tearDown() {
@@ -32,6 +34,23 @@ final class BankTests: XCTestCase {
         
         sut.startBankService()
         
-        XCTAssertEqual(expectedResult, loanSection.customer?.waitingNumber)
+        switch customer.businessType {
+        case .deposit:
+            XCTAssertEqual(expectedResult, depositSection.customer?.waitingNumber)
+        case .loan:
+            XCTAssertEqual(expectedResult, loanSection.customer?.waitingNumber)
+        }
+    }
+    
+    func test_startBankService_호출시_cancel이_한번만_호출된다() {
+        // given
+        let customer = Customer(waitingNumber: 1)!
+        sut.setUpCustomerQueue(customers: [customer])
+        
+        // when
+        sut.startBankService()
+                
+        // then
+        XCTAssertEqual(timer.count, 1)
     }
 }

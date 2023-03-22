@@ -32,3 +32,5 @@ class BusinessTimer {
         state = .finished
     }
 }
+
+extension BusinessTimer: StateChangeable {}
